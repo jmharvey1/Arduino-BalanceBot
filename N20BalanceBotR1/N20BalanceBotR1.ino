@@ -48,7 +48,8 @@ equilibrium.
 
 //#include <string.h>
 #include <LiquidCrystal.h>
-#include <LCDKeypad.h>
+//#include <LCDKeypad.h>
+#include "LCDKeypadR1.h"
 //#include <LCD4Bit_mod.h> 
 
 // I2Cdev and MPU6050 must be installed as libraries, or else the .cpp/.h files
@@ -360,7 +361,7 @@ void loop() {
               mpu.dmpGetGravity(&gravity, &q);
               mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
               InputP = (ypr[2])-PitchBalancePt+BPtDif; // Remember here Pitch reading is in Radians, not Degrees
-              // if we're running in "normal" mode, build an average reading of the car's pitch speed 
+              // if we're running in "normal" mode, build an average reading of the car's pitch speed
               //using the next 30 reported values
              if(loopCnt4 >= 30) //Based on a sample period of 25ms, a loopCnt4 of 40 is ~1 second; note - loopCnt4 gets incremented in the Pitch PID 
               {
@@ -414,6 +415,7 @@ void loop() {
               }
 
               InputY= (ypr[0] * 180/M_PI); // convert Yaw Radian value to Degrees
+              //Serial.println(ypr[2] * 180/M_PI);
               if (abs((int) InputP* 180/M_PI) < 1)// If BalanceBot is within 1 degree of vertical, then recallibrate Yaw offset
                { 
                  loopCnt1 += 1;
